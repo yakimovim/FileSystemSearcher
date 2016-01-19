@@ -29,17 +29,17 @@ namespace EdlinSoftware.FileSystemSearcher.Tests
         }
 
         [Fact]
-        public void Find_DirectFileName_AbsentFile()
+        public async void Find_DirectFileName_AbsentFile()
         {
-            var result = _searcher.Find("System.dll");
+            var result = await _searcher.FindAsync("System.dll");
 
             Assert.False(result.Any(), "Absent file should not be found");
         }
 
         [Fact]
-        public void Find_DirectFileName_ExistingFile()
+        public async void Find_DirectFileName_ExistingFile()
         {
-            var result = _searcher.Find("test.dat").ToArray();
+            var result = (await _searcher.FindAsync("test.dat")).ToArray();
 
             Assert.Equal(1, result.Length);
 
@@ -47,17 +47,17 @@ namespace EdlinSoftware.FileSystemSearcher.Tests
         }
 
         [Fact]
-        public void Find_TemplateFileName_AbsentFile()
+        public async void Find_TemplateFileName_AbsentFile()
         {
-            var result = _searcher.Find("a*t.dat").ToArray();
+            var result = await _searcher.FindAsync("a*t.dat");
 
             Assert.False(result.Any(), "Absent files should not be found");
         }
 
         [Fact]
-        public void Find_TemplateFileName_ExistingFile()
+        public async void Find_TemplateFileName_ExistingFile()
         {
-            var result = _searcher.Find("t*t.dat").ToArray();
+            var result = (await _searcher.FindAsync("t*t.dat")).ToArray();
 
             Assert.Equal(1, result.Length);
 
@@ -65,17 +65,17 @@ namespace EdlinSoftware.FileSystemSearcher.Tests
         }
 
         [Fact]
-        public void Find_DirectoryInTemplate_AbsentFile()
+        public async void Find_DirectoryInTemplate_AbsentFile()
         {
-            var result = _searcher.Find(@"bin\System.dll");
+            var result = await _searcher.FindAsync(@"bin\System.dll");
 
             Assert.False(result.Any(), "Absent file should not be found");
         }
 
         [Fact]
-        public void Find_DirectoryInTemplate_ExistingFile()
+        public async void Find_DirectoryInTemplate_ExistingFile()
         {
-            var result = _searcher.Find(@"bin\result.dat").ToArray();
+            var result = (await _searcher.FindAsync(@"bin\result.dat")).ToArray();
 
             Assert.Equal(1, result.Length);
 
@@ -83,9 +83,9 @@ namespace EdlinSoftware.FileSystemSearcher.Tests
         }
 
         [Fact]
-        public void Find_UsingDot_ExistingFile()
+        public async void Find_UsingDot_ExistingFile()
         {
-            var result = _searcher.Find(@".\bin\result.dat").ToArray();
+            var result = (await _searcher.FindAsync(@".\bin\result.dat")).ToArray();
 
             Assert.Equal(1, result.Length);
 
@@ -93,9 +93,9 @@ namespace EdlinSoftware.FileSystemSearcher.Tests
         }
 
         [Fact]
-        public void Find_WildCardInDirectoryInTemplate_ExistingFile()
+        public async void Find_WildCardInDirectoryInTemplate_ExistingFile()
         {
-            var result = _searcher.Find(@"b?n\result.dat").ToArray();
+            var result = (await _searcher.FindAsync(@"b?n\result.dat")).ToArray();
 
             Assert.Equal(1, result.Length);
 
@@ -103,9 +103,9 @@ namespace EdlinSoftware.FileSystemSearcher.Tests
         }
 
         [Fact]
-        public void Find_AllDirectories_ExistingFiles()
+        public async void Find_AllDirectories_ExistingFiles()
         {
-            var result = _searcher.Find(@"*/*.dat").ToArray();
+            var result = (await _searcher.FindAsync(@"*/*.dat")).ToArray();
 
             Assert.Equal(3, result.Length);
 
@@ -115,9 +115,9 @@ namespace EdlinSoftware.FileSystemSearcher.Tests
         }
 
         [Fact]
-        public void Find_AllSubDirectories_ExistingFiles()
+        public async void Find_AllSubDirectories_ExistingFiles()
         {
-            var result = _searcher.Find(@"**/*.dat").ToArray();
+            var result = (await _searcher.FindAsync(@"**/*.dat")).ToArray();
 
             Assert.Equal(5, result.Length);
 

@@ -17,17 +17,17 @@ namespace EdlinSoftware.FileSystemSearcher.Tests
         }
 
         [Fact]
-        public void Find_DirectFileName_AbsentFile()
+        public async void Find_DirectFileName_AbsentFile()
         {
-            var result = _searcher.Find(BaseDirectory + "System.dll");
+            var result = await _searcher.FindAsync(BaseDirectory + "System.dll");
 
             Assert.False(result.Any(), "Absent file should not be found");
         }
 
         [Fact]
-        public void Find_DirectFileName_ExistingFile()
+        public async void Find_DirectFileName_ExistingFile()
         {
-            var result = _searcher.Find(BaseDirectory + "test.dat").ToArray();
+            var result = (await _searcher.FindAsync(BaseDirectory + "test.dat")).ToArray();
 
             Assert.Equal(1, result.Length);
 
@@ -35,17 +35,17 @@ namespace EdlinSoftware.FileSystemSearcher.Tests
         }
 
         [Fact]
-        public void Find_TemplateFileName_AbsentFile()
+        public async void Find_TemplateFileName_AbsentFile()
         {
-            var result = _searcher.Find(BaseDirectory + "a*t.dat").ToArray();
+            var result = (await _searcher.FindAsync(BaseDirectory + "a*t.dat")).ToArray();
 
             Assert.False(result.Any(), "Absent files should not be found");
         }
 
         [Fact]
-        public void Find_TemplateFileName_ExistingFile()
+        public async void Find_TemplateFileName_ExistingFile()
         {
-            var result = _searcher.Find(BaseDirectory + "t*t.dat").ToArray();
+            var result = (await _searcher.FindAsync(BaseDirectory + "t*t.dat")).ToArray();
 
             Assert.Equal(1, result.Length);
 
@@ -53,17 +53,17 @@ namespace EdlinSoftware.FileSystemSearcher.Tests
         }
 
         [Fact]
-        public void Find_DirectoryInTemplate_AbsentFile()
+        public async void Find_DirectoryInTemplate_AbsentFile()
         {
-            var result = _searcher.Find(BaseDirectory + @"bin\System.dll");
+            var result = await _searcher.FindAsync(BaseDirectory + @"bin\System.dll");
 
             Assert.False(result.Any(), "Absent file should not be found");
         }
 
         [Fact]
-        public void Find_DirectoryInTemplate_ExistingFile()
+        public async void Find_DirectoryInTemplate_ExistingFile()
         {
-            var result = _searcher.Find(BaseDirectory + @"bin\result.dat").ToArray();
+            var result = (await _searcher.FindAsync(BaseDirectory + @"bin\result.dat")).ToArray();
 
             Assert.Equal(1, result.Length);
 
@@ -71,9 +71,9 @@ namespace EdlinSoftware.FileSystemSearcher.Tests
         }
 
         [Fact]
-        public void Find_WildCardInDirectoryInTemplate_ExistingFile()
+        public async void Find_WildCardInDirectoryInTemplate_ExistingFile()
         {
-            var result = _searcher.Find(BaseDirectory + @"b?n\result.dat").ToArray();
+            var result = (await _searcher.FindAsync(BaseDirectory + @"b?n\result.dat")).ToArray();
 
             Assert.Equal(1, result.Length);
 
@@ -81,9 +81,9 @@ namespace EdlinSoftware.FileSystemSearcher.Tests
         }
 
         [Fact]
-        public void Find_AllDirectories_ExistingFiles()
+        public async void Find_AllDirectories_ExistingFiles()
         {
-            var result = _searcher.Find(BaseDirectory + @"*/*.dat").ToArray();
+            var result = (await _searcher.FindAsync(BaseDirectory + @"*/*.dat")).ToArray();
 
             Assert.Equal(3, result.Length);
 
@@ -93,9 +93,9 @@ namespace EdlinSoftware.FileSystemSearcher.Tests
         }
 
         [Fact]
-        public void Find_AllSubDirectories_ExistingFiles()
+        public async void Find_AllSubDirectories_ExistingFiles()
         {
-            var result = _searcher.Find(BaseDirectory + @"**/*.dat").ToArray();
+            var result = (await _searcher.FindAsync(BaseDirectory + @"**/*.dat")).ToArray();
 
             Assert.Equal(5, result.Length);
 

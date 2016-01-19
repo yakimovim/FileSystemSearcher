@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace EdlinSoftware.FileSystemSearcher
 {
@@ -26,43 +27,43 @@ namespace EdlinSoftware.FileSystemSearcher
         /// </summary>
         /// <param name="globTemplate">Glob template.</param>
         /// <returns>Enumeration of all full paths of file system objects corresponding to <paramref name="globTemplate"/>. Never can be null.</returns>
-        public IEnumerable<string> Find(string globTemplate)
+        public Task<IEnumerable<string>> FindAsync(string globTemplate)
         {
             var searchParameters = new SearchParameters(BaseDirectory, globTemplate);
 
-            return GetFileSystemObjects(searchParameters.BaseDirectory, searchParameters.SearchTemplateParts);
+            return GetFileSystemObjectsAsync(searchParameters.BaseDirectory, searchParameters.SearchTemplateParts);
         }
 
-        private IEnumerable<string> GetFileSystemObjects(string currentDirectory, string[] searchTemplateParts)
+        private async Task<IEnumerable<string>> GetFileSystemObjectsAsync(string currentDirectory, string[] searchTemplateParts)
         {
             var currentPart = searchTemplateParts[0];
 
             if (searchTemplateParts.Length == 1)
-                return _fileSystem.GetFileSystemEntries(currentDirectory, currentPart);
+                return await _fileSystem.GetFileSystemEntriesAsync(currentDirectory, currentPart);
 
             if (currentPart == "**")
-                return GetFileSystemObjectsFromAllSubDirectories(currentDirectory, searchTemplateParts.Skip(1).ToArray());
+                return await GetFileSystemObjectsFromAllSubDirectoriesAsync(currentDirectory, searchTemplateParts.Skip(1).ToArray());
 
-            var directories = _fileSystem.GetDirectories(currentDirectory, currentPart);
+            var directories = await _fileSystem.GetDirectoriesAsync(currentDirectory, currentPart);
 
             var results = new List<string>();
             foreach (var directory in directories)
             {
-                results.AddRange(GetFileSystemObjects(
+                results.AddRange(await GetFileSystemObjectsAsync(
                     directory,
                     searchTemplateParts.Skip(1).ToArray()));
             }
             return results;
         }
 
-        private IEnumerable<string> GetFileSystemObjectsFromAllSubDirectories(string currentDirectory, string[] searchTemplateParts)
+        private async Task<IEnumerable<string>> GetFileSystemObjectsFromAllSubDirectoriesAsync(string currentDirectory, string[] searchTemplateParts)
         {
             var results = new List<string>();
 
-            var directories = _fileSystem.GetDirectories(currentDirectory, "*");
+            var directories = await _fileSystem.GetDirectoriesAsync(currentDirectory, "*");
             foreach (var directory in directories)
             {
-                results.AddRange(GetFileSystemObjectsFromAllSubDirectories(
+                results.AddRange(await GetFileSystemObjectsFromAllSubDirectoriesAsync(
                     directory,
                     searchTemplateParts));
             }
@@ -71,15 +72,15 @@ namespace EdlinSoftware.FileSystemSearcher
 
             if (searchTemplateParts.Length == 1)
             {
-                results.AddRange(_fileSystem.GetFileSystemEntries(currentDirectory, currentPart));
+                results.AddRange(await _fileSystem.GetFileSystemEntriesAsync(currentDirectory, currentPart));
             }
             else
             {
-                directories = _fileSystem.GetDirectories(currentDirectory, currentPart);
+                directories = await _fileSystem.GetDirectoriesAsync(currentDirectory, currentPart);
 
                 foreach (var directory in directories)
                 {
-                    results.AddRange(GetFileSystemObjects(
+                    results.AddRange(await GetFileSystemObjectsAsync(
                         directory,
                         searchTemplateParts.Skip(1).ToArray()));
                 }

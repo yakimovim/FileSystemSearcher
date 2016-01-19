@@ -1,4 +1,6 @@
-﻿namespace EdlinSoftware.FileSystemSearcher
+﻿using System.Threading.Tasks;
+
+namespace EdlinSoftware.FileSystemSearcher
 {
     /// <summary>
     /// Represents file system.
@@ -16,7 +18,7 @@
         /// <param name="path">Base path.</param>
         /// <param name="searchPattern">Search pattern.</param>
         /// <returns>All file system entries in the current <paramref name="path"/> corresponding to <paramref name="searchPattern"/>.</returns>
-        string[] GetFileSystemEntries(string path, string searchPattern);
+        Task<string[]> GetFileSystemEntriesAsync(string path, string searchPattern);
 
         /// <summary>
         /// Returns all directories in the current <paramref name="path"/> corresponding to <paramref name="searchPattern"/>.
@@ -24,6 +26,6 @@
         /// <param name="path">Base path.</param>
         /// <param name="searchPattern">Search pattern.</param>
         /// <returns>All directories in the current <paramref name="path"/> corresponding to <paramref name="searchPattern"/>.</returns>
-        string[] GetDirectories(string path, string searchPattern);
+        Task<string[]> GetDirectoriesAsync(string path, string searchPattern);
     }
 }
