@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EdlinSoftware.FileSystemSearcher", "EdlinSoftware.GlobFinder\EdlinSoftware.FileSystemSearcher.csproj", "{175CDC37-17F7-4759-9A97-DD3B2A741C9B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EdlinSoftware.FileSystemSearcher.Tests", "EdlinSoftware.GlobFinder.Tests\EdlinSoftware.FileSystemSearcher.Tests.csproj", "{8F20B3B8-8CB5-4BED-AEF0-6F908832DF0E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{175CDC37-17F7-4759-9A97-DD3B2A741C9B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{175CDC37-17F7-4759-9A97-DD3B2A741C9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{175CDC37-17F7-4759-9A97-DD3B2A741C9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{175CDC37-17F7-4759-9A97-DD3B2A741C9B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8F20B3B8-8CB5-4BED-AEF0-6F908832DF0E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F20B3B8-8CB5-4BED-AEF0-6F908832DF0E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8F20B3B8-8CB5-4BED-AEF0-6F908832DF0E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8F20B3B8-8CB5-4BED-AEF0-6F908832DF0E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
