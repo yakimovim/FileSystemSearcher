@@ -61,4 +61,32 @@ namespace EdlinSoftware.FileSystemSearcher.Tests
 
         public string Combine(string path1, string path2) => Path.Combine(path1, path2);
     }
+
+    public class DelayedFileSystem : IFileSystem
+    {
+        private readonly IFileSystem _fileSystem;
+        private readonly TimeSpan _delay;
+
+        public DelayedFileSystem(IFileSystem fileSystem, TimeSpan delay)
+        {
+            _fileSystem = fileSystem;
+            _delay = delay;
+        }
+
+        public string BaseDirectory => _fileSystem.BaseDirectory;
+
+        public async Task<string[]> GetFileSystemEntriesAsync(string path, string searchPattern, CancellationToken cancellationToken)
+        {
+            await Task.Delay(_delay, cancellationToken);
+
+            return await _fileSystem.GetFileSystemEntriesAsync(path, searchPattern, cancellationToken);
+        }
+
+        public async Task<string[]> GetDirectoriesAsync(string path, string searchPattern, CancellationToken cancellationToken)
+        {
+            await Task.Delay(_delay, cancellationToken);
+
+            return await _fileSystem.GetDirectoriesAsync(path, searchPattern, cancellationToken);
+        }
+    }
 }
