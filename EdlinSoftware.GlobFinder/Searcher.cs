@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace EdlinSoftware.FileSystemSearcher
@@ -26,67 +27,99 @@ namespace EdlinSoftware.FileSystemSearcher
         /// Returns enumeration of all full paths of file system objects corresponding to <paramref name="globTemplate"/>.
         /// </summary>
         /// <param name="globTemplate">Glob template.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>Enumeration of all full paths of file system objects corresponding to <paramref name="globTemplate"/>. Never can be null.</returns>
-        public Task<IEnumerable<string>> FindAsync(string globTemplate)
+        public Task<IEnumerable<string>> FindAsync(string globTemplate, CancellationToken cancellationToken)
         {
             var searchParameters = new SearchParameters(BaseDirectory, globTemplate);
 
-            return GetFileSystemObjectsAsync(searchParameters.BaseDirectory, searchParameters.SearchTemplateParts);
+            cancellationToken.ThrowIfCancellationRequested();
+
+            return GetFileSystemObjectsAsync(searchParameters.BaseDirectory, searchParameters.SearchTemplateParts, cancellationToken);
         }
 
-        private async Task<IEnumerable<string>> GetFileSystemObjectsAsync(string currentDirectory, string[] searchTemplateParts)
+        private async Task<IEnumerable<string>> GetFileSystemObjectsAsync(string currentDirectory, string[] searchTemplateParts, CancellationToken cancellationToken)
         {
+            cancellationToken.ThrowIfCancellationRequested();
+
             var currentPart = searchTemplateParts[0];
 
             if (searchTemplateParts.Length == 1)
-                return await _fileSystem.GetFileSystemEntriesAsync(currentDirectory, currentPart);
+                return await _fileSystem.GetFileSystemEntriesAsync(currentDirectory, currentPart, cancellationToken);
 
             if (currentPart == "**")
-                return await GetFileSystemObjectsFromAllSubDirectoriesAsync(currentDirectory, searchTemplateParts.Skip(1).ToArray());
+                return await GetFileSystemObjectsFromAllSubDirectoriesAsync(currentDirectory, searchTemplateParts.Skip(1).ToArray(), cancellationToken);
 
-            var directories = await _fileSystem.GetDirectoriesAsync(currentDirectory, currentPart);
+            var directories = await _fileSystem.GetDirectoriesAsync(currentDirectory, currentPart, cancellationToken);
 
             var results = new List<string>();
             foreach (var directory in directories)
             {
+                cancellationToken.ThrowIfCancellationRequested();
+
                 results.AddRange(await GetFileSystemObjectsAsync(
                     directory,
-                    searchTemplateParts.Skip(1).ToArray()));
+                    searchTemplateParts.Skip(1).ToArray(),
+                    cancellationToken));
             }
             return results;
         }
 
-        private async Task<IEnumerable<string>> GetFileSystemObjectsFromAllSubDirectoriesAsync(string currentDirectory, string[] searchTemplateParts)
+        private async Task<IEnumerable<string>> GetFileSystemObjectsFromAllSubDirectoriesAsync(string currentDirectory, string[] searchTemplateParts, CancellationToken cancellationToken)
         {
+            cancellationToken.ThrowIfCancellationRequested();
+
             var results = new List<string>();
 
-            var directories = await _fileSystem.GetDirectoriesAsync(currentDirectory, "*");
+            var directories = await _fileSystem.GetDirectoriesAsync(currentDirectory, "*", cancellationToken);
             foreach (var directory in directories)
             {
+                cancellationToken.ThrowIfCancellationRequested();
+
                 results.AddRange(await GetFileSystemObjectsFromAllSubDirectoriesAsync(
                     directory,
-                    searchTemplateParts));
+                    searchTemplateParts,
+                    cancellationToken));
             }
 
             var currentPart = searchTemplateParts[0];
 
             if (searchTemplateParts.Length == 1)
             {
-                results.AddRange(await _fileSystem.GetFileSystemEntriesAsync(currentDirectory, currentPart));
+                results.AddRange(await _fileSystem.GetFileSystemEntriesAsync(currentDirectory, currentPart, cancellationToken));
             }
             else
             {
-                directories = await _fileSystem.GetDirectoriesAsync(currentDirectory, currentPart);
+                directories = await _fileSystem.GetDirectoriesAsync(currentDirectory, currentPart, cancellationToken);
 
                 foreach (var directory in directories)
                 {
+                    cancellationToken.ThrowIfCancellationRequested();
+
                     results.AddRange(await GetFileSystemObjectsAsync(
                         directory,
-                        searchTemplateParts.Skip(1).ToArray()));
+                        searchTemplateParts.Skip(1).ToArray(),
+                        cancellationToken));
                 }
             }
 
             return results;
+        }
+    }
+
+    public static class SearcherExtender
+    {
+        /// <summary>
+        /// Returns enumeration of all full paths of file system objects corresponding to <paramref name="globTemplate"/>.
+        /// </summary>
+        /// <param name="searcher">Searcher.</param>
+        /// <param name="globTemplate">Glob template.</param>
+        /// <returns>Enumeration of all full paths of file system objects corresponding to <paramref name="globTemplate"/>. Never can be null.</returns>
+        public static Task<IEnumerable<string>> FindAsync(this Searcher searcher, string globTemplate)
+        {
+            var source = new CancellationTokenSource();
+
+            return searcher.FindAsync(globTemplate, source.Token);
         }
     }
 }

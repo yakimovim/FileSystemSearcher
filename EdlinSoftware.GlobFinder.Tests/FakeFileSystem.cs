@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace EdlinSoftware.FileSystemSearcher.Tests
@@ -14,7 +15,7 @@ namespace EdlinSoftware.FileSystemSearcher.Tests
 
         public string BaseDirectory { get; set; } = @"c:\";
 
-        public Task<string[]> GetFileSystemEntriesAsync(string path, string searchPattern)
+        public Task<string[]> GetFileSystemEntriesAsync(string path, string searchPattern, CancellationToken cancellationToken)
         {
             return Task.FromResult(GetEntries(GetFileSystemObjects(Directories, path)
                 .Concat(GetFileSystemObjects(Files, path)),
@@ -22,7 +23,7 @@ namespace EdlinSoftware.FileSystemSearcher.Tests
                 searchPattern));
         }
 
-        public Task<string[]> GetDirectoriesAsync(string path, string searchPattern)
+        public Task<string[]> GetDirectoriesAsync(string path, string searchPattern, CancellationToken cancellationToken)
         {
             return Task.FromResult(GetEntries(GetFileSystemObjects(Directories, path),
                 path,

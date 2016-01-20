@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace EdlinSoftware.FileSystemSearcher
@@ -8,14 +9,14 @@ namespace EdlinSoftware.FileSystemSearcher
     {
         public string BaseDirectory => Environment.CurrentDirectory;
 
-        public Task<string[]> GetFileSystemEntriesAsync(string path, string searchPattern)
+        public Task<string[]> GetFileSystemEntriesAsync(string path, string searchPattern, CancellationToken cancellationToken)
         {
-            return Task.Run(() => Directory.GetFileSystemEntries(path, searchPattern));
+            return Task.Run(() => Directory.GetFileSystemEntries(path, searchPattern), cancellationToken);
         }
 
-        public Task<string[]> GetDirectoriesAsync(string path, string searchPattern)
+        public Task<string[]> GetDirectoriesAsync(string path, string searchPattern, CancellationToken cancellationToken)
         {
-            return Task.Run(() => Directory.GetDirectories(path, searchPattern));
+            return Task.Run(() => Directory.GetDirectories(path, searchPattern), cancellationToken);
         }
     }
 }
