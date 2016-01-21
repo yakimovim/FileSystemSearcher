@@ -4,7 +4,7 @@ This project contains class that asynchronously searches for file system objects
 
 ##Usage
 
-1. Basic search:
+###1\. Basic search:
 
 ```csharp
 using EdlinSoftware.FileSystemSearcher;
@@ -14,7 +14,7 @@ using EdlinSoftware.FileSystemSearcher;
 var txtFiles = await new Searcher().FindAsync(@"c:\documents\*.txt"); 
 ```
 
-2. Templates in path:
+###2\. Templates in path:
 
 You can use '*' and '?' wildcards not only in the last part of template path, but in any place.
 
@@ -22,7 +22,7 @@ You can use '*' and '?' wildcards not only in the last part of template path, bu
 var txtFiles = await new Searcher().FindAsync(@"c:\user\doc*\abs?.txt"); 
 ```
 
-3. Search in all subdirectories:
+###3\. Search in all subdirectories:
 
 You can use '**' wildcard to execute search inside all subdirectories of some directory.
 
@@ -30,7 +30,7 @@ You can use '**' wildcard to execute search inside all subdirectories of some di
 var txtFiles = await new Searcher().FindAsync(@"c:\user\**\doc\*.txt"); 
 ```
 
-4. Types of paths:
+###4\. Types of paths:
 
 With the searcher you can use absolute, network or relative paths. In case of relative paths they are considered relatively value of **BaseDirectory** property. Default value of this property is **Environment.CurrentDirectory**.
 
