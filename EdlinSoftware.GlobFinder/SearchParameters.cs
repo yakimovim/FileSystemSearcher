@@ -7,20 +7,21 @@ namespace EdlinSoftware.FileSystemSearcher
     {
         public SearchParameters(string baseDirectory, string template)
         {
-            var searchTemplateParts = template.Split(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
+            if (Path.IsPathRooted(template))
+            {
+                var pathRoot = Path.GetPathRoot(template);
 
-            if (IsAbsolutePath(searchTemplateParts))
-            {
-                BaseDirectory = searchTemplateParts[0] + Path.DirectorySeparatorChar;
-                SearchTemplateParts = searchTemplateParts.Skip(1).ToArray();
-            }
-            else if (IsNetworkPath(template))
-            {
-                BaseDirectory = @"\\" + searchTemplateParts[2] + @"\";
-                SearchTemplateParts = searchTemplateParts.Skip(3).ToArray();
+                var searchTemplateParts = template.Substring((pathRoot ?? string.Empty).Length)
+                    .Split(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
+
+                BaseDirectory = pathRoot;
+                SearchTemplateParts = searchTemplateParts;
             }
             else
             {
+                var searchTemplateParts = template
+                    .Split(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
+
                 if (searchTemplateParts[0] == ".")
                     searchTemplateParts = searchTemplateParts.Skip(1).ToArray();
 
@@ -33,16 +34,6 @@ namespace EdlinSoftware.FileSystemSearcher
 
         public string BaseDirectory { get; private set; }
         public string[] SearchTemplateParts { get; private set; }
-
-        private bool IsAbsolutePath(string[] searchTemplateParts)
-        {
-            return searchTemplateParts[0].EndsWith(Path.VolumeSeparatorChar.ToString());
-        }
-
-        private bool IsNetworkPath(string template)
-        {
-            return template.StartsWith(@"\\");
-        }
 
         private void MoveTemplatePartsWithoutWildCards()
         {
