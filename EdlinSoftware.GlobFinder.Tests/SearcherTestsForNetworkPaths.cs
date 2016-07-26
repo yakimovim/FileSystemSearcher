@@ -67,7 +67,7 @@ namespace EdlinSoftware.FileSystemSearcher.Tests
 
             Assert.Equal(1, result.Length);
 
-            Assert.Equal(Path.Combine(BaseDirectory, @"bin\result.dat"), result[0]);
+            Assert.Equal(Path.Combine(BaseDirectory, "bin", "result.dat"), result[0]);
         }
 
         [Fact]
@@ -77,7 +77,7 @@ namespace EdlinSoftware.FileSystemSearcher.Tests
 
             Assert.Equal(1, result.Length);
 
-            Assert.Equal(Path.Combine(BaseDirectory, @"bin\result.dat"), result[0]);
+            Assert.Equal(Path.Combine(BaseDirectory, "bin", "result.dat"), result[0]);
         }
 
         [Fact]
@@ -87,9 +87,9 @@ namespace EdlinSoftware.FileSystemSearcher.Tests
 
             Assert.Equal(3, result.Length);
 
-            Assert.Contains(Path.Combine(BaseDirectory, @"bin\result.dat"), result);
-            Assert.Contains(Path.Combine(BaseDirectory, @"obj\intermediate.dat"), result);
-            Assert.Contains(Path.Combine(BaseDirectory, @"some.info\info.dat"), result);
+            Assert.Contains(Path.Combine(BaseDirectory, "bin", "result.dat"), result);
+            Assert.Contains(Path.Combine(BaseDirectory, "obj", "intermediate.dat"), result);
+            Assert.Contains(Path.Combine(BaseDirectory, "some.info", "info.dat"), result);
         }
 
         [Fact]
@@ -99,11 +99,11 @@ namespace EdlinSoftware.FileSystemSearcher.Tests
 
             Assert.Equal(5, result.Length);
 
-            Assert.Contains(Path.Combine(BaseDirectory, @"test.dat"), result);
-            Assert.Contains(Path.Combine(BaseDirectory, @"bin\result.dat"), result);
-            Assert.Contains(Path.Combine(BaseDirectory, @"bin\data\temp.dat"), result);
-            Assert.Contains(Path.Combine(BaseDirectory, @"obj\intermediate.dat"), result);
-            Assert.Contains(Path.Combine(BaseDirectory, @"some.info\info.dat"), result);
+            Assert.Contains(Path.Combine(BaseDirectory, "test.dat"), result);
+            Assert.Contains(Path.Combine(BaseDirectory, "bin", "result.dat"), result);
+            Assert.Contains(Path.Combine(BaseDirectory, "bin", "data", "temp.dat"), result);
+            Assert.Contains(Path.Combine(BaseDirectory, "obj", "intermediate.dat"), result);
+            Assert.Contains(Path.Combine(BaseDirectory, "some.info", "info.dat"), result);
         }
     }
 }
