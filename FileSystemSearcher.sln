@@ -1,11 +1,16 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EdlinSoftware.FileSystemSearcher", "EdlinSoftware.GlobFinder\EdlinSoftware.FileSystemSearcher.csproj", "{175CDC37-17F7-4759-9A97-DD3B2A741C9B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EdlinSoftware.FileSystemSearcher.Tests", "EdlinSoftware.GlobFinder.Tests\EdlinSoftware.FileSystemSearcher.Tests.csproj", "{8F20B3B8-8CB5-4BED-AEF0-6F908832DF0E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Miscellaneous", "Miscellaneous", "{2CDCDF8C-3D84-4B84-BA39-EC88D2425FBB}"
+	ProjectSection(SolutionItems) = preProject
+		.travis.yml = .travis.yml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -21,7 +21,7 @@ namespace EdlinSoftware.FileSystemSearcher.Tests
             if(assemblyFolder == null)
                 throw new InvalidOperationException();
 
-            var baseDirectory = new DirectoryInfo(Path.Combine(assemblyFolder, @"..\..\..")).FullName;
+            var baseDirectory = new DirectoryInfo(Path.Combine(assemblyFolder, "..", "..", "..")).FullName;
 
             baseDirectory = Path.Combine(baseDirectory, "TestData");
 
@@ -79,7 +79,7 @@ namespace EdlinSoftware.FileSystemSearcher.Tests
 
             Assert.Equal(1, result.Length);
 
-            Assert.Equal(Path.Combine(_searcher.BaseDirectory, @"bin\result.dat"), result[0]);
+            Assert.Equal(Path.Combine(_searcher.BaseDirectory, "bin", "result.dat"), result[0]);
         }
 
         [Fact]
@@ -89,7 +89,7 @@ namespace EdlinSoftware.FileSystemSearcher.Tests
 
             Assert.Equal(1, result.Length);
 
-            Assert.Equal(Path.Combine(_searcher.BaseDirectory, @"bin\result.dat"), result[0]);
+            Assert.Equal(Path.Combine(_searcher.BaseDirectory, "bin", "result.dat"), result[0]);
         }
 
         [Fact]
@@ -99,7 +99,7 @@ namespace EdlinSoftware.FileSystemSearcher.Tests
 
             Assert.Equal(1, result.Length);
 
-            Assert.Equal(Path.Combine(_searcher.BaseDirectory, @"bin\result.dat"), result[0]);
+            Assert.Equal(Path.Combine(_searcher.BaseDirectory, "bin", "result.dat"), result[0]);
         }
 
         [Fact]
@@ -109,9 +109,9 @@ namespace EdlinSoftware.FileSystemSearcher.Tests
 
             Assert.Equal(3, result.Length);
 
-            Assert.Contains(Path.Combine(_searcher.BaseDirectory, @"bin\result.dat"), result);
-            Assert.Contains(Path.Combine(_searcher.BaseDirectory, @"obj\intermediate.dat"), result);
-            Assert.Contains(Path.Combine(_searcher.BaseDirectory, @"some.info\info.dat"), result);
+            Assert.Contains(Path.Combine(_searcher.BaseDirectory, "bin", "result.dat"), result);
+            Assert.Contains(Path.Combine(_searcher.BaseDirectory, "obj", "intermediate.dat"), result);
+            Assert.Contains(Path.Combine(_searcher.BaseDirectory, "some.info", "info.dat"), result);
         }
 
         [Fact]
@@ -121,11 +121,11 @@ namespace EdlinSoftware.FileSystemSearcher.Tests
 
             Assert.Equal(5, result.Length);
 
-            Assert.Contains(Path.Combine(_searcher.BaseDirectory, @"test.dat"), result);
-            Assert.Contains(Path.Combine(_searcher.BaseDirectory, @"bin\result.dat"), result);
-            Assert.Contains(Path.Combine(_searcher.BaseDirectory, @"bin\data\temp.dat"), result);
-            Assert.Contains(Path.Combine(_searcher.BaseDirectory, @"obj\intermediate.dat"), result);
-            Assert.Contains(Path.Combine(_searcher.BaseDirectory, @"some.info\info.dat"), result);
+            Assert.Contains(Path.Combine(_searcher.BaseDirectory, "test.dat"), result);
+            Assert.Contains(Path.Combine(_searcher.BaseDirectory, "bin", "result.dat"), result);
+            Assert.Contains(Path.Combine(_searcher.BaseDirectory, "bin", "data", "temp.dat"), result);
+            Assert.Contains(Path.Combine(_searcher.BaseDirectory, "obj", "intermediate.dat"), result);
+            Assert.Contains(Path.Combine(_searcher.BaseDirectory, "some.info", "info.dat"), result);
         }
     }
 }
