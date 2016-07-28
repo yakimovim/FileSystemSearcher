@@ -33,7 +33,9 @@ namespace EdlinSoftware.FileSystemSearcher.Tests
         private IEnumerable<string> GetFileSystemObjects(IDictionary<string, IList<string>> storage, string path)
         {
             path = path.TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
+            path = string.Join(Path.DirectorySeparatorChar.ToString(), path.Split(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar));
             var baseDirectory = BaseDirectory.TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
+            baseDirectory = string.Join(Path.DirectorySeparatorChar.ToString(), baseDirectory.Split(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar));
 
             if (path.StartsWith(baseDirectory, StringComparison.OrdinalIgnoreCase))
                 path = path.Substring(baseDirectory.Length);
